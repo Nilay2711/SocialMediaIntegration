@@ -8,11 +8,12 @@
     android:background="@drawable/gradient"
     tools:context=".googlesignedin">
 
-
+<!--Hey-->
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="300dp"
             android:layout_height="300dp"
+
             android:layout_marginTop="60dp"
             android:layout_gravity="center"
             android:id="@+id/photo"/>
