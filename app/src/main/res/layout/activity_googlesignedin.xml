@@ -8,7 +8,7 @@
     android:background="@drawable/gradient"
     tools:context=".googlesignedin">
 
-<!--Hey-->
+
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="300dp"
