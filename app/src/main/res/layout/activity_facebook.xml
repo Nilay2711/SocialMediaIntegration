@@ -12,7 +12,6 @@
         android:gravity="center"
         android:orientation="vertical">
 
-
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/fb_profile_pic"
             android:layout_width="300dp"
@@ -37,7 +36,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="25sp"
-
             android:fontFamily="@font/baloo"
             android:layout_marginTop="15dp"
             android:textColor="@color/text_color" />
@@ -49,7 +47,6 @@
             android:textSize="30sp"
             android:layout_width="250dp"
             android:layout_height="56dp"
-
             android:fontFamily="@font/baloo"
             android:layout_marginTop="50dp"
             android:background="@drawable/logoutbutton"

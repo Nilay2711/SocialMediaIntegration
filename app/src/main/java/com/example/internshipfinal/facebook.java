@@ -54,7 +54,6 @@ public class facebook  extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 AlertDialog.Builder builder_exitbutton = new AlertDialog.Builder(facebook.this);
                 builder_exitbutton.setTitle("Really Logout?")
                         .setMessage("Are you sure?")

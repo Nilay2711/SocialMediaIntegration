@@ -36,7 +36,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.Task;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -61,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         SharedPreferences fb_settings = getSharedPreferences(FB_LOGIN, 0);
         SharedPreferences email_settings = getSharedPreferences(GMAIL_LOGIN, 0);
         if (fb_settings.getString("fb_logged", "").toString().equals("fb_logged")) {
@@ -100,12 +98,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         fb_loginButton = findViewById(R.id.fblogin_button);
         callbackManager = CallbackManager.Factory.create();
-
         fb_loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LoginManager.getInstance().logInWithReadPermissions(MainActivity.this,Arrays.asList("email"));
-
                 LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
@@ -114,12 +110,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         progressDialog = new ProgressDialog(MainActivity.this);
                         progressDialog.setTitle("Loading data...");
                         progressDialog.show();
-
                         GraphRequest graphRequest = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
                                 Log.d("Demo", object.toString());
-
                                 try {
                                     name = object.getString("name");
                                     id = object.getString("id");
@@ -128,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                     }else{
                                         profilePicUrl = "null";
                                     }
-
                                     if(object.has("email")) {
                                         email = object.getString("email");
                                     }else{
@@ -145,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                     Toast.makeText(MainActivity.this, "Login successfully.", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(MainActivity.this, facebook.class));
                                     finish();
-
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -196,7 +188,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private void sendfbData() {
         sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-
         editor.putString(Fbname,name);
         editor.putString(Fbemail,email);
         editor.putString(FbprofileUrl,profilePicUrl);
@@ -227,7 +218,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("gmail_logged", "gmail_logged");
             editor.commit();
-
             Toast.makeText(MainActivity.this, "Login successfully.", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(MainActivity.this, Google.class));
             finish();

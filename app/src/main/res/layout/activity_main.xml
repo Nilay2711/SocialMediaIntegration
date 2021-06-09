@@ -17,8 +17,6 @@
         android:orientation="vertical"
         android:gravity="center">
 
-
-
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/logo"
             android:layout_width="500dp"
@@ -27,7 +25,6 @@
             android:src="@drawable/logo"
             android:layout_centerHorizontal="true" />
 
-
         <Button
             android:id="@+id/fblogin_button"
             android:text="Facebook"
@@ -35,7 +32,6 @@
             android:textSize="30sp"
             android:layout_marginTop="130dp"
             android:layout_width="250dp"
-
             android:layout_height="56dp"
             android:background="@drawable/facebookbutton"
             android:shadowColor="#A8A8A8"
@@ -45,7 +41,6 @@
             android:shadowDy="-12"
             android:shadowRadius="14"
             />
-
 
         <Button
             android:id="@+id/gmaillogin_button"
@@ -76,7 +71,6 @@
             android:textSize="10dp"
             android:textColor="@color/text_color"
             android:text="By clicking on login, you are accepting our privacy policy \nand terms &amp; conditions." />
-
 
         <TextView
             android:id="@+id/made_by"

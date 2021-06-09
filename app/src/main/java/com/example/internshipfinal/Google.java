@@ -37,7 +37,6 @@ public class Google extends AppCompatActivity implements GoogleApiClient.OnConne
     SharedPreferences sharedPreferences;
     public static final String SHARED_PREFS = "sahredprefs";
     public static final String EmailprofileUrl = "PemailprofileUrl", Emailname = "Pemail_name", Emailemail = "Pemail_email";
-
     public static final String GMAIL_LOGIN = "gmail_login";
     public static final String GMAIL_SAVE = "gmail_save";
     ProgressDialog progressDialog;
@@ -58,13 +57,11 @@ public class Google extends AppCompatActivity implements GoogleApiClient.OnConne
 
         SharedPreferences settings_save = getSharedPreferences(GMAIL_LOGIN, 0);
         if (settings_save.getString("gmail_saved", "").toString().equals("gmail_saved")) {
-
             sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
             name.setText(sharedPreferences.getString(Emailname, ""));
             email.setText(sharedPreferences.getString(Emailemail, ""));
             Picasso.get().load(sharedPreferences.getString(EmailprofileUrl, "")).placeholder(R.drawable.profile).into(circleImageView);
             progressDialog.dismiss();
-
         }
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
@@ -80,12 +77,10 @@ public class Google extends AppCompatActivity implements GoogleApiClient.OnConne
             }else{
                 Pemail_profileUrl = "null";
             }
-
             Picasso.get().load(Pemail_profileUrl).placeholder(R.drawable.profile).into(circleImageView);
             name.setText(Pemail_name);
             email.setText(Pemail_email);
             progressDialog.dismiss();
-
             sendemailData();
         }
 
