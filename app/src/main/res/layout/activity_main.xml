@@ -1,151 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/gradient">
-
-
-    <ImageView
-        android:id="@+id/profile_pic"
-        android:layout_width="120dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="40dp"
-        android:layout_gravity="center"
-        app:srcCompat="@drawable/ezio"
-
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:visibility="gone"
-        android:textColor="@color/white"
-        android:layout_below="@id/profile_pic"
-        android:layout_marginTop="20dp"
-        android:id="@+id/pname"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:visibility="gone"
-        android:textColor="@color/white"
-        android:layout_below="@id/pname"
-        android:layout_marginTop="20dp"
-        android:id="@+id/pemail"/>
-
-
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="100dp"
-        android:background="#11000000"
-        android:drawableLeft="@drawable/ic_action_user"
-        android:ems="10"
-        android:hint="Username"
-        android:layout_gravity="center"
-        android:inputType="textPersonName"
-        android:textSize="16dp"
-        android:layout_marginBottom="35dp"
-        android:layout_above="@+id/editText2"
-        android:layout_centerHorizontal="true" />
-
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:background="#11000000"
-        android:drawableLeft="@drawable/ic_action_pass"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:layout_marginBottom="130dp"
-        android:layout_alignBottom="@+id/cardView"
-        android:layout_alignLeft="@+id/editText"
-        android:layout_alignStart="@+id/editText" />
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        app:cardBackgroundColor="@color/colorAccent"
-        app:cardCornerRadius="25dp"
-        app:cardElevation="10dp"
-
-        android:layout_gravity="center"
-        android:id="@+id/cardView"
-        android:layout_marginBottom="31dp"
-        android:layout_above="@+id/textView2"
-        android:layout_centerHorizontal="true">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Login"
-                android:textColor="#fff"
-                android:textSize="18sp" />
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Register Here."
-
-        android:layout_gravity="center"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="6dp" />
-
-
+    android:background="@drawable/background"
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/main_logo"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:gravity="center">
 
 
 
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/loginb"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginBottom="30dp" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/logo"
+            android:layout_width="500dp"
+            android:layout_marginTop="50dp"
+            android:layout_height="300dp"
+            android:src="@drawable/logo"
+            android:layout_centerHorizontal="true" />
 
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/signin_button"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
+        <Button
+            android:id="@+id/fblogin_button"
+            android:text="Facebook"
+            android:textColor="#6FE8CC"
+            android:textSize="30sp"
+            android:layout_marginTop="130dp"
+            android:layout_width="250dp"
 
-            android:layout_gravity="center_horizontal"
+            android:layout_height="56dp"
+            android:background="@drawable/facebookbutton"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="5"
+            android:drawableStart="@drawable/facebook"
+            android:fontFamily="@font/baloo"
+            android:shadowDy="-12"
+            android:shadowRadius="14"
             />
 
 
+        <Button
+            android:id="@+id/gmaillogin_button"
+            android:text="Gmail"
+            android:textColor="@color/black"
+            android:drawableStart="@drawable/gmail"
+            android:textSize="30sp"
+            android:layout_width="250dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/baloo"
+            android:background="@drawable/gmailbutton"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="5"
+            android:shadowDy="-12"
+            android:shadowRadius="14"
+            />
 
+        <TextView
+            android:id="@+id/link_texts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:singleLine="true"
+            android:visibility="invisible"
+            android:fontFamily="@font/baloo"
+            android:gravity="center_horizontal"
+            android:textSize="10dp"
+            android:textColor="@color/text_color"
+            android:text="By clicking on login, you are accepting our privacy policy \nand terms &amp; conditions." />
+
+
+        <TextView
+            android:id="@+id/made_by"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Developed by:- Nilay Pandya"
+            android:fontFamily="@font/baloo"
+            android:textAllCaps="false"
+            android:textColor="@color/text_color"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

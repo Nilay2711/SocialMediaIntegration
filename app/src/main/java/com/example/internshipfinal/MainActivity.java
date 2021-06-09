@@ -1,248 +1,242 @@
 package com.example.internshipfinal;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.Task;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
-public class MainActivity extends AppCompatActivity {
+    Button fb_loginButton, gmail_loginButton;
+    CallbackManager callbackManager;
+    String name, id,  profilePicUrl, email;
+    SharedPreferences sharedPreferences;
+    public static final String SHARED_PREFS = "sahredprefs";
+    public static final String FbprofileUrl = "PfbprofileUrl", Fbname = "Pfb_name", Fbemail = "Pfb_email", Fbid = "Pfb_id";
+    public static final String FB_LOGIN = "fb_login";
 
-    //Facebook Starts
-    public LoginButton loginButton;
-    public ImageView circleImageView;
-    public TextView txtname;
-    public TextView txtemail;
-    public CallbackManager callbackManager;
-    public TextView register;
-    public CardView cardView;
-    public EditText user,pass;
-
-    //Facebook Ends
-
-    //Google Starts
-
-    int RC_SIGN_IN = 0;
-    SignInButton signInButton;
-    GoogleSignInClient mGoogleSignInClient;
-
-    //Google Ends
+    GoogleApiClient googleApiClient;
+    public static final String GMAIL_LOGIN = "gmail_login";
+    ProgressDialog progressDialog;
+    public static final int SignIn_value = 1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-                //Facebook Starts
-    register = findViewById(R.id.textView2);
-    cardView = findViewById(R.id.cardView);
-    user = findViewById(R.id.editText);
-    pass = findViewById(R.id.editText2);
-      callbackManager = CallbackManager.Factory.create();
+        SharedPreferences fb_settings = getSharedPreferences(FB_LOGIN, 0);
+        SharedPreferences email_settings = getSharedPreferences(GMAIL_LOGIN, 0);
+        if (fb_settings.getString("fb_logged", "").toString().equals("fb_logged")) {
+            startActivity(new Intent(MainActivity.this, facebook.class));
+            this.finish();
+        }else if (email_settings.getString("gmail_logged", "").toString().equals("gmail_logged")) {
+            startActivity(new Intent(MainActivity.this, Google.class));
+            this.finish();
+        }
 
-          txtname = findViewById(R.id.pname);
-        txtemail= findViewById(R.id.pemail);
-        circleImageView = findViewById(R.id.profile_pic);
+        TextView text_links = findViewById(R.id.link_texts);
+        String text = "By clicking on login, you are accepting our privacy policy \nand terms & conditions.";
+        SpannableString ss = new SpannableString(text);
+        ForegroundColorSpan fcs = new ForegroundColorSpan(Color.rgb(66,103,178));
+        ss.setSpan(fcs,44,58, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(fcs,64,82, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        signInButton = findViewById(R.id.signin_button);
-
-        loginButton= findViewById(R.id.loginb);
-
-        checkloginstatus();
-        loginButton.setPermissions(Arrays.asList("email","public_profile"));
-
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-
+            public void onClick(@NonNull View view) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://social-media-integra-1.flycricket.io/privacy.html")));
             }
+        };
 
+        ClickableSpan clickableSpan1 = new ClickableSpan() {
             @Override
-            public void onCancel() {
-
+            public void onClick(@NonNull View view) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://social-media-integra-1.flycricket.io/terms.html")));
             }
+        };
 
+        ss.setSpan(clickableSpan,44,58,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(clickableSpan1,64,82,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        text_links.setText(ss);
+        text_links.setMovementMethod(LinkMovementMethod.getInstance());
+
+        fb_loginButton = findViewById(R.id.fblogin_button);
+        callbackManager = CallbackManager.Factory.create();
+
+        fb_loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onError(FacebookException error) {
+            public void onClick(View view) {
+                LoginManager.getInstance().logInWithReadPermissions(MainActivity.this,Arrays.asList("email"));
 
+                LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        fb_loginButton.setVisibility(View.INVISIBLE);
+                        gmail_loginButton.setVisibility(View.INVISIBLE);
+                        progressDialog = new ProgressDialog(MainActivity.this);
+                        progressDialog.setTitle("Loading data...");
+                        progressDialog.show();
+
+                        GraphRequest graphRequest = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                Log.d("Demo", object.toString());
+
+                                try {
+                                    name = object.getString("name");
+                                    id = object.getString("id");
+                                    if(object.getJSONObject("picture").getJSONObject("data").getString("url") != null) {
+                                        profilePicUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                                    }else{
+                                        profilePicUrl = "null";
+                                    }
+
+                                    if(object.has("email")) {
+                                        email = object.getString("email");
+                                    }else{
+                                        email = " ";
+                                    }
+
+                                    SharedPreferences settings = getSharedPreferences(FB_LOGIN, 0);
+                                    SharedPreferences.Editor editor = settings.edit();
+                                    editor.putString("fb_logged", "fb_logged");
+                                    editor.commit();
+                                    sendfbData();
+                                    progressDialog.dismiss();
+
+                                    Toast.makeText(MainActivity.this, "Login successfully.", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(MainActivity.this, facebook.class));
+                                    finish();
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
+                        Bundle bundle = new Bundle();
+                        bundle.putString("fields","picture.type(large),gender, name, id, birthday, friends, email");
+                        graphRequest.setParameters(bundle);
+                        graphRequest.executeAsync();
+
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        fb_loginButton.setVisibility(View.VISIBLE);
+                        gmail_loginButton.setVisibility(View.VISIBLE);
+                        Toast.makeText(MainActivity.this, "Login cancelled.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+                        fb_loginButton.setVisibility(View.VISIBLE);
+                        gmail_loginButton.setVisibility(View.VISIBLE);
+                        progressDialog.dismiss();
+                        Toast.makeText(MainActivity.this, "Login error.", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
-        //Facebook Ends
+        gmail_loginButton = findViewById(R.id.gmaillogin_button);
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
 
-        //Google Starts
-
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .build();
-
-                mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-                signInButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        signIn();
-                    }
-                });
-
-
-
+        gmail_loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+                startActivityForResult(intent, SignIn_value);
+            }
+        });
     }
 
+    private void sendfbData() {
+        sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                     //Google Starts
-
-            private void signIn() {
-                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-                startActivityForResult(signInIntent, RC_SIGN_IN);
-            }
-
-            @Override
-            public void onActivityResult(int requestCode, int resultCode, Intent data) {
-                callbackManager.onActivityResult(requestCode, resultCode, data);
-                super.onActivityResult(requestCode, resultCode, data);
-                if (requestCode == RC_SIGN_IN) {
-                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-                    handleSignInResult(task);
-                }
-            }
-
-
-
-
-            private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-                try {
-                    GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-                    startActivity(new Intent(MainActivity.this, googlesignedin.class));
-                } catch (ApiException e) {
-                    Log.w("Google Sign In Error", "signInResult:failed code=" + e.getStatusCode());
-                    Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            protected void onStart() {
-                GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-                if(account != null) {
-                    startActivity(new Intent(MainActivity.this, googlesignedin.class));
-                }
-                super.onStart();
-            }
-                     //Google Ends
-
-
-                //Facebook Starts
-
-
-        AccessTokenTracker tokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken)
-            {
-                if(currentAccessToken==null)
-                {
-                    txtname.setText("");
-                    txtemail.setText("");
-
-                    circleImageView.setImageResource(0);
-                    Toast.makeText(MainActivity.this,"User Logged Out",Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this,MainActivity.class);
-                    startActivity(intent);
-                }
-                else{
-                    loaduserprofile(currentAccessToken);
-                }
-            }
-    };
-
-    private void loaduserprofile(AccessToken newaccessToken)
-        {
-           GraphRequest request = GraphRequest.newMeRequest(newaccessToken, new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response)
-                    {
-                        try {
-
-                            String first_name = object.getString("first_name");
-                            String last_name = object.getString("last_name");
-                            String email = object.getString("email");
-                            String id = object.getString("id");
-
-                            String image_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
-                            txtname.setText(first_name + " " + last_name);
-                            txtemail.setText(email);
-                            RequestOptions requestOptions = new RequestOptions();
-                            requestOptions.dontAnimate();
-                            txtname.setVisibility(View.VISIBLE);
-                            txtemail.setVisibility(View.VISIBLE);
-                            signInButton.setVisibility(View.GONE);
-                            register.setVisibility(View.GONE);
-                            cardView.setVisibility(View.GONE);
-                            user.setVisibility(View.GONE);
-                            pass.setVisibility(View.GONE);
-                            Glide.with(MainActivity.this).load(image_url).into(circleImageView);
-
-                        }
-                        catch (JSONException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields","first_name,last_name,email,id");
-                request.setParameters(parameters);
-                request.executeAsync();
-
-
+        editor.putString(Fbname,name);
+        editor.putString(Fbemail,email);
+        editor.putString(FbprofileUrl,profilePicUrl);
+        editor.putString(Fbid,id);
+        editor.apply();
     }
 
-                private void checkloginstatus(){
-                    if(AccessToken.getCurrentAccessToken()!= null){
-                        loaduserprofile(AccessToken.getCurrentAccessToken());
-                }
-            }
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) { }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if(requestCode == SignIn_value){
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSigninResult(task);
+        }
+    }
 
-                 //Facebook Ends
+    private void handleSigninResult(Task<GoogleSignInAccount> result){
+        try{
+            GoogleSignInAccount account = result.getResult(ApiException.class);
+            fb_loginButton.setVisibility(View.INVISIBLE);
+            gmail_loginButton.setVisibility(View.INVISIBLE);
+            SharedPreferences settings = getSharedPreferences(GMAIL_LOGIN, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("gmail_logged", "gmail_logged");
+            editor.commit();
+
+            Toast.makeText(MainActivity.this, "Login successfully.", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(MainActivity.this, Google.class));
+            finish();
+
+        } catch (ApiException e) {
+            fb_loginButton.setVisibility(View.VISIBLE);
+            gmail_loginButton.setVisibility(View.VISIBLE);
+            Toast.makeText(this, "Login failed.", Toast.LENGTH_SHORT).show();
+            Log.v("Error", "signInResult:failed code = " + e.getStatusCode());
+        }
+    }
 }
