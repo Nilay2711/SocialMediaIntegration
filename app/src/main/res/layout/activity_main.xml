@@ -28,36 +28,36 @@
         <Button
             android:id="@+id/fblogin_button"
             android:text="Facebook"
-            android:textColor="#6FE8CC"
+            android:textColor="@color/white"
             android:textSize="30sp"
             android:layout_marginTop="130dp"
             android:layout_width="250dp"
             android:layout_height="56dp"
+            android:drawablePadding="10dp"
             android:background="@drawable/facebookbutton"
             android:shadowColor="#A8A8A8"
-            android:shadowDx="5"
             android:drawableStart="@drawable/facebook"
             android:fontFamily="@font/baloo"
-            android:shadowDy="-12"
-            android:shadowRadius="14"
             />
 
         <Button
             android:id="@+id/gmaillogin_button"
-            android:text="Gmail"
-            android:textColor="@color/black"
-            android:drawableStart="@drawable/gmail"
-            android:textSize="30sp"
             android:layout_width="250dp"
             android:layout_height="56dp"
-            android:layout_marginTop="50dp"
-            android:fontFamily="@font/baloo"
+            android:layout_marginTop="120dp"
             android:background="@drawable/gmailbutton"
+            android:drawableStart="@drawable/gmail"
+            android:drawablePadding="10dp"
+            android:focusable="auto"
+            android:fontFamily="@font/baloo"
+            android:forceHasOverlappingRendering="false"
             android:shadowColor="#A8A8A8"
-            android:shadowDx="5"
-            android:shadowDy="-12"
-            android:shadowRadius="14"
-            />
+            android:text="Google"
+            android:textAllCaps="true"
+            android:textColor="@color/red"
+            android:textSize="30sp"
+            android:textStyle="normal" />
+
 
         <TextView
             android:id="@+id/link_texts"

@@ -88,7 +88,7 @@ public class Google extends AppCompatActivity implements GoogleApiClient.OnConne
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder_exitbutton = new AlertDialog.Builder(Google.this);
-                builder_exitbutton.setTitle("Really Logout?")
+                builder_exitbutton.setTitle("So You want to Logout?")
                         .setMessage("Are you sure?")
                         .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                             @Override

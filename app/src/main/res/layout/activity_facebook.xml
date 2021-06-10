@@ -43,17 +43,13 @@
         <Button
             android:id="@+id/logout"
             android:text="Logout"
-            android:textColor="@color/white"
+            android:textColor="@color/teal_200"
             android:textSize="30sp"
             android:layout_width="250dp"
             android:layout_height="56dp"
             android:fontFamily="@font/baloo"
             android:layout_marginTop="50dp"
             android:background="@drawable/logoutbutton"
-            android:shadowColor="#A8A8A8"
-            android:shadowDx="5"
-            android:shadowDy="-12"
-            android:shadowRadius="14"
             />
 
     </LinearLayout>
